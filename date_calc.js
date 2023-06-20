@@ -28,6 +28,8 @@ if(startDateExist != null && startDateExist != "") {
 	//lostDays = startdate.dateDiff(endDate,"",2) + 1;
 	lostDays = Math.round(diffDays) + 1;
 
+
+	
 	if(lostDays >= 180) {
 		lostDays = 180;
 		rec.field('RECV.INFO.CALCULATION_LOST_RESTRICTED_DAY_END').set(maxDate.toString(3));
