@@ -25,11 +25,11 @@ if(startDateExist != null && startDateExist != "") {
 	var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
         var diffDays = Math.abs((startdateObj.getTime() - endDateObj.getTime()) / (oneDay));
 
-	//lostDays = startdate.dateDiff(endDate,"",2) + 1;
+	//lostDayss = startdate.dateDiff(endDate,"",2) + 1;
 	lostDays = Math.round(diffDays) + 1;
 
 
-	
+
 	if(lostDays >= 180) {
 		lostDays = 180;
 		rec.field('RECV.INFO.CALCULATION_LOST_RESTRICTED_DAY_END').set(maxDate.toString(3));
