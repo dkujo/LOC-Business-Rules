@@ -1,32 +1,31 @@
-var parentRecid = rec.field("RECV.INVES.PARENT_RECID").get();
-var incidentRec = ctx.record(parentRecid);
+// get Person Responsible hidden value (it points so Manage Employee record)
+var hiddenEmployeeRecord = rec
+  .field("RECV.INVES.PERSON_RESPONSIBLE_FOR_CORRECTIVE_ACTION")
+  .hvalue(0);
 
-var incID = incidentRec.get("RECV.FORM.INCIDENT_ID");
-var scat_desc = incidentRec.get("RECV.FORM.SCAT_INCIDENT_DESCRIPTION");
+log.println("Employee hidden value = " + hiddenEmployeeRecord);
 
-rec.set("RECV.INVES.INCIDENT_CASE_ID", incID, incID);
-rec.set("RECV.INVES.SCAT_INCIDENT_DESCRIPTION", scat_desc, scat_desc);
+if (
+  hiddenEmployeeRecord !== "" &&
+  hiddenEmployeeRecord !== null &&
+  hiddenEmployeeRecord != undefined
+) {
+  var manageEmployeeRecord = ctx.record(hiddenEmployeeRecord);
+  var employeeEmailUsername = manageEmployeeRecord.get("RECV.DTL.EMAIL_ADDRESS");
+  log.println("employee email / LP username = " + employeeEmailUsername);
+}
 
+//pull user ID from SEC_USER table
+var query = " select UID from SEC_USER where USERNAME = :emailUsername ";
+var queryRes = db
+  .sql(query)
+  .add_string("emailUsername", employeeEmailUsername)
+  .limit(1)
+  .result();
 
+if (queryRes.rc() == 1 && queryRes.size() > 0) {
+  var employeeUID = queryRes.cell(0, 0);
+}
 
+log.println("employee UID: " + employeeUID);
 
-
-// get person responsible visible and hidden value 
-var employeeNameVisible = rec.field("RECV.INVES.PERSON_RESPONSIBLE_FOR_CORRECTIVE_ACTION").vvalue(0);
-var employeeNameHidden = rec.field("RECV.INVES.PERSON_RESPONSIBLE_FOR_CORRECTIVE_ACTION").hvalue(0);
-
-// log these 2 variables for testing purposes
-log.println("Employee visible value = " + employeeNameVisible);
-log.println("Employee hidden value = " + employeeNameHidden);
-
-// hidden value is referencing employee recid, call it if hidden is not '' / null / undefind
-
-
-
-// grab LP username (email) from employee recid
-
-
-//define query to pull user id from username (email)....use SEC_USER table
-
-
-// finally set the user id into field in Corrective action entity
