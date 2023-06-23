@@ -29,3 +29,4 @@ if (queryRes.rc() == 1 && queryRes.size() > 0) {
 
 log.println("employee UID: " + employeeUID);
 
+rec.set("RECV.INVES.LP_USER_ID", employeeUID, employeeUID);

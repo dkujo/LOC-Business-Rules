@@ -8,10 +8,13 @@ log.println("Actual Completion Date = " + actualCompletionDate);
 var recid = rec.id();
 
 // find date when record was created
-var dateRecordCreatedQuery = db
-  .sql(
-    "SELECT CONVERT(VARCHAR(200), REC.CREATED_DATE, 120) FROM DAT_RECORD REC JOIN CFG_FIXED_LIST WFSTAT ON WFSTAT.FLID = REC.STATUS_FLID AND WFSTAT.TID = REC.TID WHERE REC.CTXTYPE = 2500 AND REC.CTXTKN = 'CORRECTIVE_ACTIONS' AND WFSTAT.VTID = 7 AND REC.RECID =:RecordID"
-  )
+var dateRecordCreatedQuery = db.sql(
+    "SELECT CONVERT(VARCHAR(200), REC.CREATED_DATE, 120) FROM "
+    + "DAT_RECORD REC JOIN CFG_FIXED_LIST WFSTAT ON "
+    + "WFSTAT.FLID = REC.STATUS_FLID AND WFSTAT.TID = REC.TID "
+    + "WHERE REC.CTXTYPE = 2500 AND REC.CTXTKN = 'CORRECTIVE_ACTIONS' "
+    + "AND WFSTAT.VTID = 7 AND REC.TID = :tenantTID AND REC.RECID =:RecordID " )
+  .add_long("tenantTID", "{TEN.ID}")
   .add_int("RecordID", recid)
   .limit(1)
   .result();
