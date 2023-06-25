@@ -1,5 +1,7 @@
 var emprecid = rec.field('RECV.DTL.EMPLOYEE').get();
 
+
+// check emprecid
 if(emprecid != null && emprecid !=''){
 	emprecid = rec.field('RECV.DTL.EMPLOYEE').hvalue(0);
 var res = db.sql(" select edddl1.number_1 as typeid,edddl1.vnumber_1 as type " +
